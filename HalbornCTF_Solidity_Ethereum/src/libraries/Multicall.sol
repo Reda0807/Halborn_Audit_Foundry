@@ -15,10 +15,14 @@ abstract contract MulticallUpgradeable is Initializable {
     ) external payable returns (bytes[] memory results) {
         results = new bytes[](data.length);
         for (uint256 i = 0; i < data.length; i++) {
-            results[i] = AddressUpgradeable.functionDelegateCall(
-                address(this),
-                data[i]
-            );
+            // Use the low-level `delegatecall`
+            (bool success, bytes memory result) = address(this).delegatecall(data[i]);
+            
+            // If delegatecall fails, revert with the error message
+            require(success, "Delegatecall failed");
+
+            // Store the result of the call in the results array
+            results[i] = result;
         }
         return results;
     }
