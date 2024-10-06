@@ -100,4 +100,19 @@ contract HalbornTest is Test {
         assertEq(token.balanceOf(address(ALICE)), 100 ether);
         vm.stopPrank();
     }
+
+    function test_returnLoansWithIncorrectImplementation() public {
+        vm.deal(ALICE, 10 ether);
+        vm.startPrank(ALICE);
+        nft.mintBuyWithETH{value: 1 ether}();
+        nft.approve(address(loans), uint256(1));
+        loans.depositNFTCollateral(uint256(1));
+        
+        loans.getLoan(2 ether);
+
+        loans.returnLoan(2 ether);
+
+        loans.withdrawCollateral(uint256(1));
+        vm.stopPrank();
+    }
 }
