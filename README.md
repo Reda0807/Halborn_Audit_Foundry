@@ -1,41 +1,66 @@
+## Foundry
 
-## Instructions
+**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
 
-** Halborn Offensive Security Engineers that are applying for a full time position, please audit these contracts and provide us with a Security audit report.**
+Foundry consists of:
 
-Please include:
+-   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
+-   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
+-   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
+-   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
 
-Findings Risk Description Code Section Recommendation on Improvement
+## Documentation
 
-Only PDF format will be accepted. Docx, txt ... formats will be automatically rejected.
+https://book.getfoundry.sh/
 
-## Request
+## Usage
 
-Halborn requests you to audit these smart contracts. Not only look at the code risks but also the economic aspects.
+### Build
 
-# CTF List
+```shell
+$ forge build
+```
 
+### Test
 
-## Solidity CTF for Ethereum 
+```shell
+$ forge test
+```
 
-./HalbornCTF_Solidity_Ethereum
+### Format
 
-## Solana CTF Based on Rust
+```shell
+$ forge fmt
+```
 
-./HalbornCTF_Rust_Solana/
+### Gas Snapshots
 
-## Substrate CTF Based on Rust
+```shell
+$ forge snapshot
+```
 
-./HalbornCTF_Rust_Substrate/
+### Anvil
 
-## Cosmos CTF Based on Golang
+```shell
+$ anvil
+```
 
-./HalbornCTF_Golang_Cosmos/
+### Deploy
 
-## CosmWasm CTF Based on Rust
+```shell
+$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+```
 
-./HalbornCTF_Rust_CosmWasm/
+### Cast
 
-## NEAR CTF Based on Rust
+```shell
+$ cast <subcommand>
+```
 
-./HalbornCTF_Rust_NEAR/
+### Help
+
+```shell
+$ forge --help
+$ anvil --help
+$ cast --help
+```
