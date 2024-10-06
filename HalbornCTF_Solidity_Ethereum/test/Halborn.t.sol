@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import "forge-std/Test.sol";
+import {Test, console} from "forge-std/Test.sol";
 import {Merkle} from "./murky/Merkle.sol";
 
 import {HalbornNFT} from "../src/HalbornNFT.sol";
@@ -20,10 +20,11 @@ contract HalbornTest is Test {
     HalbornNFT public nft;
     HalbornToken public token;
     HalbornLoans public loans;
+    Merkle m;
 
     function setUp() public {
         // Initialize
-        Merkle m = new Merkle();
+        m = new Merkle();
         // Test Data
         bytes32[] memory data = new bytes32[](4);
         data[0] = keccak256(abi.encodePacked(ALICE, uint256(15)));
@@ -55,5 +56,21 @@ contract HalbornTest is Test {
         loans.initialize(address(token), address(nft));
 
         token.setLoans(address(loans));
+    }
+
+    function test_setMerkleProofWithoutPermission() public {
+        bytes32[] memory data = new bytes32[](2);
+        data[0] = keccak256(abi.encodePacked(ALICE, uint256(16)));
+        data[1] = keccak256(abi.encodePacked(ALICE, uint256(19)));
+        bytes32 root = m.getRoot(data);
+
+        ALICE_PROOF_1 = m.getProof(data, 0);
+        ALICE_PROOF_2 = m.getProof(data, 1);
+
+        vm.startPrank(ALICE);
+        nft.setMerkleRoot(root);
+        nft.mintAirdrops(uint256(16), ALICE_PROOF_1);
+        assertEq(nft.ownerOf(16), ALICE);
+        vm.stopPrank();
     }
 }
