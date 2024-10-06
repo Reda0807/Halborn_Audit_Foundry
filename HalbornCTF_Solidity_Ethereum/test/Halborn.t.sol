@@ -83,4 +83,12 @@ contract HalbornTest is Test {
         assertEq(nft.ownerOf(16), Attacker);
         vm.stopPrank();
     }
+
+    function test_depositNFTCollateralDOS() public {
+        vm.deal(ALICE, 10 ether);
+        vm.startPrank(ALICE);
+        nft.mintBuyWithETH{value: 1 ether}();
+        nft.approve(address(loans), uint256(1));
+        loans.depositNFTCollateral(uint256(1));
+    }
 }
