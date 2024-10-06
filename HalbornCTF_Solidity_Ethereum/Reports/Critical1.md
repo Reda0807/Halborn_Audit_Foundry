@@ -1,4 +1,4 @@
-## Wrong Validation in the `HalbornNFT.sol#mintAirdrops()`
+## Incorrect Validation of the `HalbornNFT.sol#mintAirdrops()`
 
 #### Vulnerability Details
 The `HalbornNFT.sol#mintAirdrops()` function allows approved users to receive airdrops from the protocol.

@@ -91,4 +91,13 @@ contract HalbornTest is Test {
         nft.approve(address(loans), uint256(1));
         loans.depositNFTCollateral(uint256(1));
     }
+
+    function test_getLoansWithIncorrectValidation() public {
+        vm.deal(ALICE, 10 ether);
+        vm.startPrank(ALICE);
+
+        loans.getLoan(100 ether);
+        assertEq(token.balanceOf(address(ALICE)), 100 ether);
+        vm.stopPrank();
+    }
 }
