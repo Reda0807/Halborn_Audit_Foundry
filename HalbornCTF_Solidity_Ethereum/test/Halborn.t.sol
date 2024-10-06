@@ -61,7 +61,9 @@ contract HalbornTest is Test {
     }
 
     function test_mintAirdropsWrongValidation() public {
-
+        vm.startPrank(ALICE);
+        nft.mintAirdrops(uint256(15), ALICE_PROOF_1);
+        vm.stopPrank();
     }
 
     function test_setMerkleProofWithoutPermission() public {
