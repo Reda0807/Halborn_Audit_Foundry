@@ -43,3 +43,23 @@ As a result, the `mintAirdrops()` function will fail permanently, breaking the c
         vm.stopPrank();
     }
 ```
+
+#### Recommendation
+Modify the `HalbornNFT.sol#mintAirdrops()` function as follows:
+
+```solidity
+    function mintAirdrops(uint256 id, bytes32[] calldata merkleProof) external {
+---     require(_exists(id), "Token already minted");
++++     require(!_exists(id), "Token already minted");
+
+        bytes32 node = keccak256(abi.encodePacked(msg.sender, id));
+        bool isValidProof = MerkleProofUpgradeable.verifyCalldata(
+            merkleProof,
+            merkleRoot,
+            node
+        );
+        require(isValidProof, "Invalid proof.");
+
+        _safeMint(msg.sender, id, "");
+    }
+```
